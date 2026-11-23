@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="am" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Larki የመኪና መገጣጠሚያ ፋብሪካዎች - አስቸኳይ የስራ ቅጥር</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans Ethiopic & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Ethiopic"', '"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Plus Jakarta Sans"', 'monospace'],
+                    },
+                    colors: {
+                        slate: {
+                            950: '#04070f',
+                        },
+                        electric: '#00f0ff',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 28s linear infinite',
+                        'shimmer': 'shimmer 2.5s infinite linear',
+                        'float': 'float 5s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        shimmer: {
+                            '0%': { transform: 'translateX(-150%) skewX(-20deg)' },
+                            '100%': { transform: 'translateX(250%) skewX(-20deg)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(18px) scale(0.96)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Industrial Cyber-Blueprint Grid Overlay */
+        .blueprint-grid {
+            background-size: 44px 44px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        }
+
+        /* Dark Glassmorphism Surfaces */
+        .glass-panel {
+            background: rgba(11, 18, 34, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(0, 240, 255, 0.16);
+            box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.65);
+        }
+
+        .glass-card-amber {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.85), rgba(30, 27, 24, 0.75));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.38);
+            box-shadow: 0 16px 48px -10px rgba(245, 158, 11, 0.22);
+        }
+
+        .glass-card-emerald {
+            background: linear-gradient(145deg, rgba(10, 22, 32, 0.82), rgba(6, 32, 26, 0.72));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Ultra High-Converting Glowing CTA Button */
+        .cta-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 45%, #d97706 100%);
+            box-shadow: 
+                0 0 30px rgba(245, 158, 11, 0.55),
+                0 10px 25px -5px rgba(217, 119, 6, 0.6),
+                inset 0 1px 1px rgba(255, 255, 255, 0.65);
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.015);
+            box-shadow: 
+                0 0 45px rgba(245, 158, 11, 0.85),
+                0 15px 30px -5px rgba(217, 119, 6, 0.75),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        .cta-btn:active {
+            transform: translateY(1px) scale(0.99);
+        }
+        .cta-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%);
+            animation: shimmer 2.6s infinite linear;
+            pointer-events: none;
+        }
+
+        /* Realistic Factory Image Fallback Gradient */
+        .factory-img-fallback {
+            background: radial-gradient(circle at 30% 30%, #1e293b 0%, #090e1a 70%, #04070f 100%);
+        }
+
+        /* Custom subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #04070f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-[#00f0ff] selection:text-slate-950 min-h-screen relative overflow-x-hidden pb-28 sm:pb-24">
+
+    <!-- Ambient Cyber-Industrial Background Layers -->
+    <div class="fixed inset-0 blueprint-grid pointer-events-none z-0"></div>
+    <div class="fixed top-[-12%] left-[-8%] w-[520px] h-[520px] bg-[#00f0ff]/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+    <div class="fixed top-[35%] right-[-10%] w-[480px] h-[480px] bg-emerald-500/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[5%] left-[10%] w-[450px] h-[450px] bg-amber-500/10 rounded-full blur-[130px] pointer-events-none z-0"></div>
+
+    <!-- 1. TOP URGENCY BAR & LIVE COUNTDOWN -->
+    <div class="relative z-30 bg-gradient-to-r from-slate-950 via-amber-950/50 to-slate-950 border-b border-amber-500/30 px-3 py-2.5">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+            <!-- Pulsing Urgent Hiring Pill -->
+            <div class="flex items-center space-x-2">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-90"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                </span>
+                <span class="font-extrabold text-amber-300 tracking-wide">አስቸኳይ የስራ ቅጥር</span>
+                <span class="hidden md:inline text-slate-400">|</span>
+                <span class="hidden md:inline text-emerald-400 font-semibold">የኦንላይን ምዝገባ ክፍት ነው</span>
+            </div>
+
+            <!-- Live Countdown & Remaining Spots Counter -->
+            <div class="flex items-center space-x-3 sm:space-x-5 ml-auto sm:ml-0">
+                <div class="flex items-center space-x-1.5 bg-red-500/15 border border-red-500/40 px-2.5 py-1 rounded-lg">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="text-red-200 font-bold">የቀሩ ክፍት ቦታዎች: <span id="spots-counter" class="text-amber-300 font-extrabold text-sm sm:text-base">47</span> ብቻ</span>
+                </div>
+                <div class="hidden sm:flex items-center space-x-1.5 bg-slate-900/90 border border-[#00f0ff]/30 px-3 py-1 rounded-lg font-mono">
+                    <svg class="w-4 h-4 text-[#00f0ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-slate-300 text-xs">ማብቂያ:</span>
+                    <span id="countdown-timer" class="text-[#00f0ff] font-bold tracking-wider">14:38:52</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand Navigation Bar -->
+    <header class="sticky top-0 z-20 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3">
+            <!-- Brand Emblem -->
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-[#00f0ff] via-cyan-500 to-blue-700 p-[1px] shadow-lg shadow-[#00f0ff]/20">
+                    <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+                        <svg class="w-6 h-6 text-[#00f0ff]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="font-black tracking-wider text-lg sm:text-xl text-white leading-none">LARKI</span>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold bg-[#00f0ff]/15 text-[#00f0ff] border border-[#00f0ff]/30 rounded">INTERNATIONAL</span>
+                    </div>
+                    <span class="text-xs text-slate-400 font-medium block mt-0.5">የመኪና መገጣጠሚያ ፋብሪካዎች ኔትወርክ</span>
+                </div>
+            </div>
+
+            <!-- Header Quick Action Button -->
+            <a href="https://addismobileapps.com/sms.html" 
+               class="cta-btn text-slate-950 font-extrabold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-xl flex items-center space-x-1.5 shadow-md">
+                <span>የመከታተያ ቁጥር ያግኙ</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
+
+        <!-- 2. HERO SECTION WITH HIGH-IMPACT AUTOMOTIVE VISUALS -->
+        <section class="mb-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left Column: Exact Required Headlines, Intro Copy & Hero CTA -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Urgent Badge -->
+                    <div class="inline-flex items-center space-x-2.5 bg-amber-500/15 border border-amber-400/50 text-amber-300 px-4 py-2 rounded-full shadow-lg shadow-amber-500/10">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-85"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                        </span>
+                        <span class="font-extrabold text-sm sm:text-base tracking-wide">አስቸኳይ የስራ ቅጥር</span>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">2026 ቅጥር</span>
+                    </div>
+
+                    <!-- Employer Header -->
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+                        <span class="text-[#00f0ff] block text-xl sm:text-2xl font-extrabold mb-1.5">ቀጣሪ ፦</span>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-[#00f0ff]">
+                            Larki የመኪና መገጣጠሚያ ፋብሪካዎች
+                        </span>
+                    </h1>
+
+                    <!-- Main Introductory Paragraph (Exact Text) -->
+                    <div class="glass-panel rounded-2xl p-5 sm:p-6 border-l-4 border-l-[#00f0ff]">
+                        <p class="text-base sm:text-lg text-slate-100 leading-relaxed font-medium">
+                            Larki ኢንተርናሽናል የመኪና መገጣጠሚያ ፋብሪካዎች ኔትወርክ በአዲስ አበባ እና የተለያዩ የክልል ከተሞች ለሚያስገነባቸው ብዛት ያላቸው ከፍተኛ ፣መካከለኛ እና አነስተኛ የመኪና መገጣጠሚያ Assembly ፋብሪካዎች የተለያዩ በጁኒየር ደረጃ ሊሳተፉ የሚችሉ ቋሚ እና ጊዜያዊ የስራ መስኮች አመልካቾችን ለማወዳደር ይፈልጋል ፡፡
+                        </p>
+                    </div>
+
+                    <!-- Primary High-CTA Hero Button -->
+                    <div class="pt-2 space-y-3">
+                        <a href="https://addismobileapps.com/sms.html" 
+                           class="cta-btn w-full sm:w-auto inline-flex flex-col sm:flex-row items-center justify-center text-slate-950 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl group">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-black text-xl sm:text-2xl tracking-tight">የመከታተያ ቁጥር ያግኙ</span>
+                                <span class="w-9 h-9 rounded-xl bg-slate-950/15 flex items-center justify-center group-hover:translate-x-1.5 transition-transform">
+                                    <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </a>
+                        <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300">
+                            <span class="flex items-center space-x-1.5 text-emerald-400 font-semibold">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>ወዲያውኑ የመከታተያ ቁጥር ይሰጣል</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-[#00f0ff] font-semibold">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>ያለምንም ክፍያ በነፃ ይመዝገቡ</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Hero Realistic Car Assembly Showcase -->
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-3xl overflow-hidden border border-[#00f0ff]/35 shadow-2xl shadow-[#00f0ff]/15 factory-img-fallback group">
+                        <!-- Realistic Car Assembly Line Photo with Graceful SVG Fallback -->
+                        <img src="https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1000&q=85" 
+                             alt="Larki Modern Car Assembly Line" 
+                             onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                             class="w-full h-[340px] sm:h-[410px] object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+                        
+                        <!-- Graceful Fallback Illustration if offline -->
+                        <div class="hidden w-full h-[340px] sm:h-[410px] flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-slate-900 via-cyan-950/40 to-slate-950">
+                            <svg class="w-24 h-24 text-[#00f0ff] mb-4 opacity-80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 17h14M5 17a2 2 0 11-4 0 2 2 0 014 0zm14 0a2 2 0 104 0 2 2 0 00-4 0zM3 13l1.5-4.5A2 2 0 016.4 7h11.2a2 2 0 011.9 1.5L21 13M3 13h18M3 13v4m18-4v4" />
+                            </svg>
+                            <span class="text-[#00f0ff] font-extrabold text-lg">LARKI AUTOMOTIVE ASSEMBLY PLANT</span>
+                            <span class="text-slate-400 text-sm mt-1">ዘመናዊ የመኪና መገጣጠሚያ ፋብሪካ</span>
+                        </div>
+
+                        <!-- Dark Gradient Overlay for Crisp Readability -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent"></div>
+
+                        <!-- Top Floating Verification Badge -->
+                        <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+                            <span class="bg-slate-950/85 backdrop-blur-md border border-[#00f0ff]/40 text-[#00f0ff] text-xs font-bold px-3 py-1.5 rounded-full flex items-center space-x-1.5">
+                                <span class="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping"></span>
+                                <span>Larki Assembly Plant • 2026</span>
+                            </span>
+                            <span class="bg-emerald-500/90 text-slate-950 text-xs font-black px-3 py-1 rounded-full shadow">
+                                21 የስራ ዘርፎች
+                            </span>
+                        </div>
+
+                        <!-- Bottom Glass Overlay Card inside Hero Image -->
+                        <div class="absolute bottom-4 left-4 right-4 glass-panel rounded-2xl p-4 border border-white/15">
+                            <div class="flex items-center justify-between gap-2">
+                                <div>
+                                    <p class="text-xs text-amber-300 font-bold">መነሻ ደሞዝ እና ጥቅማጥቅም</p>
+                                    <p class="text-lg sm:text-xl font-black text-white">29,000+ ብር <span class="text-xs font-normal text-slate-300">+ ትራንስፖርት</span></p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="inline-block bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold px-2.5 py-1 rounded-lg">
+                                        ቋሚ እና ጊዜያዊ
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3-Card Realistic Factory & Assembly Visual Gallery -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-8">
+                <!-- Gallery Card 1 -->
+                <div class="glass-panel rounded-2xl overflow-hidden group border border-slate-800 hover:border-[#00f0ff]/40 transition-all">
+                    <div class="h-44 overflow-hidden relative factory-img-fallback">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=700&q=80" 
+                             alt="Robotic and Engineering Precision" 
+                             onerror="this.style.display='none';"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <span class="absolute bottom-2.5 left-3 text-xs font-bold bg-slate-950/80 text-[#00f0ff] px-2.5 py-1 rounded-lg border border-[#00f0ff]/30">
+                            ዘመናዊ የመገጣጠሚያ መስመር
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-white text-sm sm:text-base">ከፍተኛ እና መካከለኛ ፋብሪካዎች</h3>
+                        <p class="text-xs text-slate-400 mt-1">በዘመናዊ ቴክኖሎጂ የተደራጁ የመኪና አካላት መገጣጠሚያ ክፍሎች</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Card 2 -->
+                <div class="glass-panel rounded-2xl overflow-hidden group border border-slate-800 hover:border-emerald-400/40 transition-all">
+                    <div class="h-44 overflow-hidden relative factory-img-fallback">
+                        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=700&q=80" 
+                             alt="Welding and Technical Assembly" 
+                             onerror="this.style.display='none';"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <span class="absolute bottom-2.5 left-3 text-xs font-bold bg-slate-950/80 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-400/30">
+                            ጁኒየር ቴክኒሻኖች እና ባለሙያዎች
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-white text-sm sm:text-base">በጁኒየር ደረጃ ሰፊ የስራ እድል</h3>
+                        <p class="text-xs text-slate-400 mt-1">በስራ ላይ ስልጠና (On-Job Training) እና ፈጣን የእድገት እርከን</p>
+                    </div>
+                </div>
+
+                <!-- Gallery Card 3 -->
+                <div class="glass-panel rounded-2xl overflow-hidden group border border-slate-800 hover:border-amber-400/40 transition-all">
+                    <div class="h-44 overflow-hidden relative factory-img-fallback">
+                        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=700&q=80" 
+                             alt="Quality Control and Engineering Team" 
+                             onerror="this.style.display='none';"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <span class="absolute bottom-2.5 left-3 text-xs font-bold bg-slate-950/80 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-400/30">
+                            ጥራት ቁጥጥር እና ሎጂስቲክስ
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-white text-sm sm:text-base">በአዲስ አበባ እና ክልል ከተሞች</h3>
+                        <p class="text-xs text-slate-400 mt-1">በመላው ሀገሪቱ በሚገኙ ቅርንጫፍ ፋብሪካዎች የስራ ምደባ</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. KEY JOB HIGHLIGHTS GRID (4 GLASSMORPHIC CARDS) -->
+        <section class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#00f0ff]">የቅጥር ዝርዝር መረጃ</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mt-0.5">ዋና ዋና የስራ መስፈርቶች እና ጥቅማጥቅሞች</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Card 1: 21 Positions + Interactive Departments Preview -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-[#00f0ff]/50 transition-all duration-300 flex flex-col justify-between">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-13 h-13 p-3 rounded-2xl bg-[#00f0ff]/15 border border-[#00f0ff]/40 text-[#00f0ff]">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-[#00f0ff] uppercase tracking-wider">ክፍት የስራ መደቦች</span>
+                            <h3 class="text-xl font-extrabold text-white mt-0.5">
+                                መደቦች ፦ በተለያዩ 21 የስራ ዘርፎች
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Sample Departments Chips -->
+                    <div class="mt-4 pt-4 border-t border-slate-800/80">
+                        <div class="flex flex-wrap gap-1.5" id="department-chips">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">መካኒክ</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">ኤሌክትሪሻን</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">ዌልዲንግ</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">ጥራት ቁጥጥር</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">ሎጂስቲክስ</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">አስተዳደር</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-cyan-200">ሹፌር</span>
+                            <button type="button" id="toggle-depts-btn" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-[#00f0ff]/15 border border-[#00f0ff]/40 text-[#00f0ff] hover:bg-[#00f0ff]/25 transition">
+                                +14 ተጨማሪ ዘርፎች ይመልከቱ
+                            </button>
+                        </div>
+                        <div id="extra-depts" class="hidden flex-wrap gap-1.5 mt-2">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">ቀለም ቀቢ (Auto Paint)</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">መጋዘን ሰራተኛ</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">የደህንነት ቁጥጥር</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">ማሽን ኦፕሬተር</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">ሂሳብ ሰራተኛ</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">የሰው ሀይል አስተዳደር</span>
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 border border-slate-700 text-slate-300">እና ሌሎችም...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Education Level -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-blue-400/50 transition-all duration-300 flex flex-col justify-between">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-13 h-13 p-3 rounded-2xl bg-blue-500/15 border border-blue-400/40 text-blue-400">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">የትምህርት መስፈርት</span>
+                            <h3 class="text-xl font-extrabold text-white mt-0.5">
+                                የትምህርት ደረጃ ፦ 8 እና ከዛ በላይ
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap gap-2 text-xs text-slate-300">
+                        <span class="bg-blue-500/10 border border-blue-400/25 px-2.5 py-1 rounded-lg">8ኛ - 12ኛ ክፍል</span>
+                        <span class="bg-blue-500/10 border border-blue-400/25 px-2.5 py-1 rounded-lg">TVET / ዲፕሎማ</span>
+                        <span class="bg-blue-500/10 border border-blue-400/25 px-2.5 py-1 rounded-lg">ዲግሪ እና ከዛ በላይ</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Salary & Benefits -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-amber-400/50 transition-all duration-300 flex flex-col justify-between">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-13 h-13 p-3 rounded-2xl bg-amber-500/15 border border-amber-400/40 text-amber-400">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">ደሞዝ እና ጥቅማጥቅም</span>
+                            <h3 class="text-xl font-extrabold text-white mt-0.5 leading-snug">
+                                ደሞዝ 29000 እና ከዛ በላይ ለተለያዩ የስራ መስኮች ትራንስፖርት እና ጥቅማጥቅም
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap gap-2 text-xs text-amber-200">
+                        <span class="bg-amber-500/10 border border-amber-400/25 px-2.5 py-1 rounded-lg">የትራንስፖርት አበል</span>
+                        <span class="bg-amber-500/10 border border-amber-400/25 px-2.5 py-1 rounded-lg">የህክምና ዋስትና</span>
+                        <span class="bg-amber-500/10 border border-amber-400/25 px-2.5 py-1 rounded-lg">የትርፍ ሰዓት ክፍያ</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Work Locations -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-emerald-400/50 transition-all duration-300 flex flex-col justify-between">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 w-13 h-13 p-3 rounded-2xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-400">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">የስራ ቦታዎች</span>
+                            <h3 class="text-xl font-extrabold text-white mt-0.5 leading-snug">
+                                የስራ ቦታ ፦ አዲስ አበባ እና በሁሉም ክልል ከተሞች
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap gap-1.5 text-xs text-emerald-200">
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">አዲስ አበባ</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">አዳማ</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">ሀዋሳ</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">ባህር ዳር</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">ድሬዳዋ</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">መቐለ</span>
+                        <span class="bg-emerald-500/10 border border-emerald-400/25 px-2 py-0.5 rounded">ጅማ</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LIVE REGISTERED PHONE NUMBERS & TRACKING ID FEED (SOCIAL PROOF) -->
+        <section class="mb-12">
+            <div class="glass-card-emerald rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+                <!-- Header Row -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-emerald-500/20">
+                    <div>
+                        <div class="inline-flex items-center space-x-2 bg-emerald-500/15 border border-emerald-400/40 px-3 py-1 rounded-full mb-2">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                            </span>
+                            <span class="text-xs font-extrabold text-emerald-300 tracking-wide">LIVE TRACKING FEED</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-black text-white">
+                            የቀጥታ ተመዝጋቢዎች ዝርዝር (የመከታተያ ቁጥር ያገኙ)
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                            አሁን በኦንላይን ተመዝግበው የመከታተያ ቁጥራቸውን የተቀበሉ አመልካቾች
+                        </p>
+                    </div>
+
+                    <div class="flex items-center space-x-3 bg-slate-950/70 border border-emerald-500/30 px-4 py-2.5 rounded-2xl self-start sm:self-center">
+                        <div class="text-right">
+                            <span class="text-[11px] text-slate-400 block">ዛሬ የተመዘገቡ</span>
+                            <span id="today-registered-count" class="text-lg font-black text-emerald-400 font-mono">1,482</span>
+                        </div>
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Feed List Container -->
+                <div id="live-registrations-list" class="mt-6 space-y-3">
+                    <!-- Populated & dynamically updated via JavaScript -->
+                </div>
+
+                <!-- Bottom Feed CTA Prompt -->
+                <div class="mt-6 pt-5 border-t border-emerald-500/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-emerald-200 font-semibold text-center sm:text-left">
+                        እርስዎም ከላይ እንደሚታዩት ተመዝጋቢዎች ወዲያውኑ <span class="text-amber-300 font-bold">የመከታተያ ቁጥር</span> ያግኙ!
+                    </p>
+                    <a href="https://addismobileapps.com/sms.html" 
+                       class="cta-btn w-full sm:w-auto text-slate-950 font-black text-base px-6 py-3 rounded-xl inline-flex items-center justify-center space-x-2">
+                        <span>የመከታተያ ቁጥር ያግኙ</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. STEP-BY-STEP REGISTRATION GUIDE & CLOSING URGENCY CALLOUT -->
+        <section class="mb-12">
+            <!-- 3-Step Visual Registration Guide -->
+            <div class="mb-8">
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400">ቀላል የምዝገባ ሂደት</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white mt-1">በ3 ቀላል ደረጃዎች የመከታተያ ቁጥርዎን ይያዙ</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Step 1 -->
+                    <div class="glass-panel rounded-2xl p-5 relative border border-slate-800">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 font-black flex items-center justify-center text-lg mb-3 shadow-lg shadow-amber-500/30">
+                            1
+                        </div>
+                        <h3 class="font-extrabold text-white text-base sm:text-lg">
+                            «የመከታተያ ቁጥር ያግኙ» የሚለውን ይጫኑ
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1.5">
+                            ከታች ያለውን ቢጫ ቁልፍ በመጫን ወደ ኦንላይን መመዝገቢያ ገጽ ይግቡ።
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-panel rounded-2xl p-5 relative border border-slate-800">
+                        <div class="w-9 h-9 rounded-xl bg-[#00f0ff] text-slate-950 font-black flex items-center justify-center text-lg mb-3 shadow-lg shadow-[#00f0ff]/30">
+                            2
+                        </div>
+                        <h3 class="font-extrabold text-white text-base sm:text-lg">
+                            መረጃዎን እና የሚመርጡትን ከተማ ያስገቡ
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1.5">
+                            ስልክ ቁጥርዎን፣ የትምህርት ደረጃዎን እና የሚፈልጉትን የስራ ዘርፍ ይምረጡ።
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-panel rounded-2xl p-5 relative border border-slate-800">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-400 text-slate-950 font-black flex items-center justify-center text-lg mb-3 shadow-lg shadow-emerald-400/30">
+                            3
+                        </div>
+                        <h3 class="font-extrabold text-white text-base sm:text-lg">
+                            የመከታተያ ቁጥርዎን ወዲያውኑ ይቀበሉ
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1.5">
+                            ምዝገባዎ እንደተጠናቀቀ ልዩ የመከታተያ ቁጥርዎ በስልክዎ ይደርስዎታል።
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final High-Urgency Conversion Box -->
+            <div class="glass-card-amber rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden">
+                <div class="inline-flex items-center space-x-2 bg-red-500/20 border border-red-500/40 text-red-200 px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold mb-5">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span>የምዝገባ ጊዜው ከመጠናቀቁ በፊት ይመዝገቡ!</span>
+                </div>
+
+                <!-- Exact Closing Urgency Text -->
+                <p class="text-lg sm:text-2xl font-extrabold text-amber-100 leading-relaxed max-w-3xl mx-auto mb-8">
+                    ያሉት ቦታዎች ውስን ስለሆኑ እና የምዝገባ ቀን ሊጠናቀቅ ጥቂት ቀናት ስለቀሩ እድሉን ለማግኘት አሁኑኑ ሊንኩን በመጫን ተመዝግበው የመከታተያ ቁጥር ያግኙ
+                </p>
+
+                <!-- Second Full-Width / Massive High-CTA Button -->
+                <div class="max-w-xl mx-auto">
+                    <a href="https://addismobileapps.com/sms.html" 
+                       class="cta-btn w-full flex items-center justify-center space-x-3 text-slate-950 font-black text-xl sm:text-2xl py-5 px-8 rounded-2xl group">
+                        <span>የመከታተያ ቁጥር ያግኙ</span>
+                        <svg class="w-7 h-7 group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </a>
+                    <p class="text-xs text-amber-200/80 mt-3 font-medium">
+                        * ቁልፉን ሲጫኑ በቀጥታ ወደ Larki ኦፊሴላዊ የመከታተያ ቁጥር መስጫ ገጽ ይወስድዎታል።
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Industrial Footer -->
+    <footer class="relative z-10 border-t border-slate-800/80 bg-slate-950/90 py-8 px-4 text-center">
+        <div class="max-w-5xl mx-auto space-y-2">
+            <div class="flex items-center justify-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#00f0ff]"></span>
+                <span class="font-extrabold text-white tracking-wide text-sm sm:text-base">
+                    Larki የመኪና መገጣጠሚያ ፋብሪካዎች ኔትወርክ
+                </span>
+            </div>
+            <p class="text-xs text-slate-400">
+                Larki International Car Assembly Factories Network &copy; 2026. መብቱ በህግ የተጠበቀ ነው።
+            </p>
+        </div>
+    </footer>
+
+    <!-- Floating Live Registration Toast Notification (Bottom-Left on Desktop, Top-Right/Bottom on Mobile) -->
+    <div id="live-toast-container" class="fixed bottom-20 sm:bottom-24 left-4 z-40 max-w-xs sm:max-w-sm pointer-events-none"></div>
+
+    <!-- 6. STICKY BOTTOM MOBILE & DESKTOP HIGH-CTA BAR -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur-xl border-t border-amber-500/40 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <div class="hidden sm:flex items-center space-x-3">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <div>
+                    <p class="text-sm font-extrabold text-white">Larki የመኪና መገጣጠሚያ ፋብሪካዎች</p>
+                    <p class="text-xs text-amber-300 font-semibold">የቀሩ ቦታዎች ውስን ናቸው • ወዲያውኑ ይመዝገቡ</p>
+                </div>
+            </div>
+
+            <a href="https://addismobileapps.com/sms.html" 
+               class="cta-btn w-full sm:w-auto flex-1 sm:flex-initial flex items-center justify-center space-x-2.5 text-slate-950 font-black text-lg sm:text-xl py-3.5 px-8 rounded-xl">
+                <span>የመከታተያ ቁጥር ያግኙ</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Interactive Live Feed, Countdown & Department Toggle Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Toggle Extra Departments Chips
+            const toggleDeptsBtn = document.getElementById('toggle-depts-btn');
+            const extraDepts = document.getElementById('extra-depts');
+            if (toggleDeptsBtn && extraDepts) {
+                toggleDeptsBtn.addEventListener('click', () => {
+                    const isHidden = extraDepts.classList.contains('hidden');
+                    if (isHidden) {
+                        extraDepts.classList.remove('hidden');
+                        extraDepts.classList.add('flex');
+                        toggleDeptsBtn.textContent = 'ቀንስ';
+                    } else {
+                        extraDepts.classList.add('hidden');
+                        extraDepts.classList.remove('flex');
+                        toggleDeptsBtn.textContent = '+14 ተጨማሪ ዘርፎች ይመልከቱ';
+                    }
+                });
+            }
+
+            // 2. Dynamic Countdown Timer
+            const timerEl = document.getElementById('countdown-timer');
+            let totalSeconds = (14 * 3600) + (38 * 60) + 52;
+            setInterval(() => {
+                if (totalSeconds > 0) {
+                    totalSeconds--;
+                    const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+                    const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+                    const secs = String(totalSeconds % 60).padStart(2, '0');
+                    if (timerEl) timerEl.textContent = `${hrs}:${mins}:${secs}`;
+                }
+            }, 1000);
+
+            // 3. Live Registered Ethiopian Phone Numbers & Tracking ID Feed
+            const initialRegistrations = [
+                { phone: '+251 911 48 29 **', city: 'አዲስ አበባ', dept: 'መካኒክ', tracking: 'LRK-84920', time: 'አሁን' },
+                { phone: '0923 74 10 **', city: 'አዳማ', dept: 'ኤሌክትሪሻን', tracking: 'LRK-84919', time: 'ከ35 ሰከንድ በፊት' },
+                { phone: '+251 944 19 85 **', city: 'ሀዋሳ', dept: 'ጥራት ቁጥጥር', tracking: 'LRK-84918', time: 'ከ1 ደቂቃ በፊት' },
+                { phone: '0967 32 51 **', city: 'ባህር ዳር', dept: 'ዌልዲንግ', tracking: 'LRK-84917', time: 'ከ2 ደቂቃ በፊት' },
+                { phone: '+251 913 88 04 **', city: 'ድሬዳዋ', dept: 'ሎጂስቲክስ', tracking: 'LRK-84916', time: 'ከ3 ደቂቃ በፊት' }
+            ];
+
+            const cities = ['አዲስ አበባ', 'አዳማ', 'ሀዋሳ', 'ባህር ዳር', 'ድሬዳዋ', 'መቐለ', 'ጅማ', 'ቢሾፍቱ', 'ጎንደር', 'ሻሸመኔ'];
+            const depts = ['መካኒክ', 'ኤሌክትሪሻን', 'ጥራት ቁጥጥር', 'ሎጂስቲክስ', 'ዌልዲንግ', 'ሹፌር', 'አስተዳደር', 'ማሽን ኦፕሬተር'];
+            const prefixes = ['+251 911', '+251 912', '+251 913', '0920', '0921', '0923', '+251 930', '+251 944', '0967', '0975'];
+
+            let currentTrackingNum = 84920;
+            let todayRegistered = 1482;
+            let remainingSpots = 47;
+
+            const feedListEl = document.getElementById('live-registrations-list');
+            const todayCountEl = document.getElementById('today-registered-count');
+            const spotsCounterEl = document.getElementById('spots-counter');
+            const toastContainer = document.getElementById('live-toast-container');
+
+            function createFeedRowHTML(item, isNew = false) {
+                return `
+                    <div class="${isNew ? 'animate-slide-up border-emerald-400/50 bg-emerald-950/35' : 'border-slate-800/90 bg-slate-900/75'} border rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3 transition-all">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold flex-shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-mono font-extrabold text-white text-sm sm:text-base tracking-wide">${item.phone}</span>
+                                    <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md font-medium">${item.city}</span>
+                                </div>
+                                <div class="text-xs text-slate-400 mt-0.5 flex items-center space-x-2">
+                                    <span>ዘርፍ: <strong class="text-slate-200">${item.dept}</strong></span>
+                                    <span>•</span>
+                                    <span class="text-emerald-400 font-semibold">${item.time}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 ml-auto sm:ml-0">
+                            <span class="bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold font-mono flex items-center space-x-1.5">
+                                <span>የመከታተያ ቁጥር: ${item.tracking}</span>
+                                <span>✅</span>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function showFloatingToast(item) {
+                if (!toastContainer) return;
+                const toast = document.createElement('div');
+                toast.className = 'animate-slide-up glass-panel border border-emerald-400/50 rounded-2xl p-3.5 shadow-2xl flex items-center space-x-3 bg-slate-950/95';
+                toast.innerHTML = `
+                    <div class="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                        ✅
+                    </div>
+                    <div class="text-xs">
+                        <p class="font-mono font-bold text-white">${item.phone} <span class="text-slate-400 font-sans">(${item.city})</span></p>
+                        <p class="text-emerald-300 font-bold mt-0.5">የመከታተያ ቁጥር: ${item.tracking} አግኝተዋል!</p>
+                    </div>
+                `;
+                toastContainer.innerHTML = '';
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(10px)';
+                    toast.style.transition = 'all 0.4s ease';
+                }, 4200);
+            }
+
+            // Render initial 5 registrations
+            if (feedListEl) {
+                feedListEl.innerHTML = initialRegistrations.map(item => createFeedRowHTML(item, false)).join('');
+            }
+
+            // Generate a new realistic Ethiopian masked registration every 5.5 seconds
+            function generateRandomRegistration() {
+                currentTrackingNum++;
+                todayRegistered++;
+
+                const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+                const mid1 = String(Math.floor(10 + Math.random() * 89));
+                const mid2 = String(Math.floor(10 + Math.random() * 89));
+                const maskedPhone = `${prefix} ${mid1} ${mid2} **`;
+
+                const newEntry = {
+                    phone: maskedPhone,
+                    city: cities[Math.floor(Math.random() * cities.length)],
+                    dept: depts[Math.floor(Math.random() * depts.length)],
+                    tracking: `LRK-${currentTrackingNum}`,
+                    time: 'አሁን'
+                };
+
+                if (feedListEl) {
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = createFeedRowHTML(newEntry, true);
+                    feedListEl.insertBefore(wrapper.firstElementChild, feedListEl.firstChild);
+
+                    // Keep max 5 rows in the live list
+                    if (feedListEl.children.length > 5) {
+                        feedListEl.removeChild(feedListEl.lastElementChild);
+                    }
+                }
+
+                if (todayCountEl) {
+                    todayCountEl.textContent = todayRegistered.toLocaleString();
+                }
+
+                // Slowly tick down spots counter realistically down to 19
+                if (remainingSpots > 19 && Math.random() > 0.55) {
+                    remainingSpots--;
+                    if (spotsCounterEl) spotsCounterEl.textContent = remainingSpots;
+                }
+
+                showFloatingToast(newEntry);
+            }
+
+            setInterval(generateRandomRegistration, 5500);
+        });
+    </script>
+
+</body>
+</html>
